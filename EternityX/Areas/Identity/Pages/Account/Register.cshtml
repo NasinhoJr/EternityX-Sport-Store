@@ -1,0 +1,179 @@
+﻿@page
+@using EternityX.Roles
+@model RegisterModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate.unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+<style>
+    body {
+        background: linear-gradient(120deg, #0f172a, #020617);
+        color: #fff;
+    }
+
+    .register-wrapper {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 15px;
+    }
+
+    .register-card {
+        background: rgba(255,255,255,0.06);
+        border-radius: 28px;
+        box-shadow: 0 40px 80px rgba(0,0,0,.55);
+        max-width: 1100px;
+        width: 100%;
+        padding: 50px;
+    }
+
+    .register-title {
+        font-size: 2.6rem;
+        font-weight: 900;
+        margin-bottom: 10px;
+    }
+
+    .register-subtitle {
+        color: #d1d5db;
+        margin-bottom: 30px;
+    }
+
+    .form-control, .form-select {
+        height: 56px;
+        border-radius: 14px;
+        font-weight: 600;
+    }
+
+    .btn-register {
+        background: linear-gradient(90deg,#ff3b30,#ff8c00);
+        border: none;
+        font-weight: 900;
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, rgba(255,59,48,.25), rgba(255,204,0,.25));
+        border-radius: 22px;
+        padding: 35px;
+        height: 100%;
+    }
+
+        .info-box h3 {
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            line-height: 1.6;
+            color: #f3f4f6;
+        }
+</style>
+
+<div class="register-wrapper">
+    <div class="register-card">
+
+        <h1 class="register-title">Създай профил</h1>
+        <p class="register-subtitle">
+            Регистрацията ти дава достъп до поръчки, количка и персонализирано пазаруване.
+        </p>
+
+        <div class="row g-5">
+
+            <!-- INFO (СЪЩОТО КАКТО ПРЕДИ) -->
+            <div class="col-lg-5">
+                <div class="info-box">
+                    <h3>Защо ни трябват тези данни?</h3>
+                    <p>
+                        <strong>Име и имейл</strong> – за твоя профил и връзка с теб.<br /><br />
+                        <strong>Телефон и адрес</strong> – за доставка на поръчките.<br /><br />
+                        <strong>Парола</strong> – за сигурен достъп до профила ти.<br /><br />
+                        Данните се използват <strong>само</strong> за обслужване на поръчките.
+                    </p>
+                </div>
+            </div>
+
+            <!-- FORM -->
+            <div class="col-lg-7">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input asp-for="Input.Name" class="form-control" placeholder="Име и фамилия" />
+                            <span asp-validation-for="Input.Name" class="text-danger"></span> <!-- Грешка за Name -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <input asp-for="Input.Email" class="form-control" placeholder="Имейл" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span> <!-- Грешка за Email -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <input asp-for="Input.Username" class="form-control" placeholder="Потребителско име" />
+                            <span asp-validation-for="Input.Username" class="text-danger"></span> <!-- Грешка за Username -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Телефон" />
+                            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span> <!-- Грешка за PhoneNumber -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <input asp-for="Input.StreetAddress" class="form-control" placeholder="Адрес" />
+                            <span asp-validation-for="Input.StreetAddress" class="text-danger"></span> <!-- Грешка за StreetAddress -->
+                        </div>
+
+                        <div class="col-md-4">
+                            <input asp-for="Input.City" class="form-control" placeholder="Град" />
+                            <span asp-validation-for="Input.City" class="text-danger"></span> <!-- Грешка за City -->
+                        </div>
+
+                        <div class="col-md-4">
+                            <input asp-for="Input.State" class="form-control" placeholder="Област" />
+                            <span asp-validation-for="Input.State" class="text-danger"></span> <!-- Грешка за State -->
+                        </div>
+
+                        <div class="col-md-4">
+                            <input asp-for="Input.PostalCode" class="form-control" placeholder="Пощенски код" />
+                            <span asp-validation-for="Input.PostalCode" class="text-danger"></span> <!-- Грешка за PostalCode -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <input asp-for="Input.Password" class="form-control" placeholder="Парола" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span> <!-- Грешка за Password -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Потвърди паролата" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span> <!-- Грешка за ConfirmPassword -->
+                        </div>
+
+                        <div class="col-md-12">
+                            <select asp-for="Input.Role" class="form-select">
+                                <option value="">Избери роля</option>
+                                @foreach (var role in Model.Input.RoleList)
+                                {
+                                    if (role.Value == SD.Admin) { continue; }
+                                    <option value="@role.Value">@role.Text</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Input.Role" class="text-danger"></span> <!-- Грешка за Role -->
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-register w-100 mt-4">
+                        Регистрация
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

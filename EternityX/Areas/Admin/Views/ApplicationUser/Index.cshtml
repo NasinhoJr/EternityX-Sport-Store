@@ -1,0 +1,59 @@
+﻿@model IEnumerable<EternityX.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Потребители";
+}
+
+<h2 class="mb-3">Потребители</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">+ Нов потребител</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Потребителско име</th>
+            <th>Име</th>
+            <th>Имейл</th>
+            <th>Телефон</th>
+            <th style="width:260px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.UserName</td>
+                <td>@u.Name</td>
+                <td>@u.Email</td>
+                <td>@u.PhoneNumber</td>
+                <td>
+                    <a class="btn btn-sm btn-info"
+                       asp-action="Details"
+                       asp-route-id="@u.Id">Детайли</a>
+
+                    <a class="btn btn-sm btn-warning"
+                       asp-action="Edit"
+                       asp-route-id="@u.Id">Редакция</a>
+
+                    <form asp-action="Delete"
+                          asp-route-id="@u.Id"
+                          method="post"
+                          style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-sm btn-danger"
+                                onclick="return confirm('Сигурен ли си?')">
+                            Изтрий
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<EternityX.Models.ProductSize>
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+@{
+    ViewData["Title"] = "Размери на продукти";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">📏 Управление на размери</h4>
+            <a asp-action="Create" class="btn btn-success btn-sm">➕ Добави размер</a>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Продукт</th>
+                        <th>Размер</th>
+                        <th>Количество</th>
+                        <th style="width:180px">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        <tr>
+                            <td>@s.Id</td>
+                            <td class="fw-semibold">@s.Product?.Name</td>
+                            <td>
+                                <span class="badge bg-primary">@s.Size</span>
+                            </td>
+                            <td>
+                                @if (s.Quantity > 5)
+                                {
+                                    <span class="badge bg-success">
+                                        @s.Quantity
+                                    </span>
+                                }
+                                else if (s.Quantity > 0)
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        @s.Quantity
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">
+                                        @s.Quantity
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit"
+                                   asp-route-id="@s.Id"
+                                   class="btn btn-warning btn-sm">
+                                    ✏️
+                                </a>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@s.Id"
+                                   class="btn btn-info btn-sm text-white">
+                                    🔍
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@s.Id"
+                                   class="btn btn-danger btn-sm">
+                                    🗑
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!Model.Any())
+            {
+                <div class="text-center text-muted py-3">
+                    Няма добавени размери.
+                </div>
+            }
+        </div>
+    </div>
+</div>

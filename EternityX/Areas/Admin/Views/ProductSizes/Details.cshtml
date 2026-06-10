@@ -1,0 +1,38 @@
+﻿@model EternityX.Models.ProductSize
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+@{
+    ViewData["Title"] = "Детайли за размер";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 col-md-6 mx-auto">
+        <div class="card-header bg-info text-white">
+            <h4>🔍 Детайли за размер на продукт</h4>
+        </div>
+
+        <div class="card-body">
+            <p><strong>Продукт:</strong> @Model.Product?.Name</p>
+
+            <p>
+                <strong>Размер:</strong>
+                <span class="badge bg-primary fs-6">@Model.Size</span>
+            </p>
+
+            <p>
+                <strong>Количество:</strong>
+                <span class="badge bg-success fs-6">@Model.Quantity</span>
+            </p>
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">⬅ Назад</a>
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning">
+                    ✏️ Редакция
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

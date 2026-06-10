@@ -1,0 +1,44 @@
+﻿@model EternityX.Models.Product
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+@{
+    ViewData["Title"] = "Детайли за продукт";
+
+    string imgSrc =
+        string.IsNullOrWhiteSpace(Model.Picture)
+            ? "https://via.placeholder.com/250"
+            : (Model.Picture.StartsWith("http")
+                ? Model.Picture
+                : Url.Content($"~/images/products/{Model.Picture}"));
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 col-lg-6 mx-auto text-center">
+        <div class="card-header bg-info text-white">
+            <h4>🔍 Детайли за продукт</h4>
+        </div>
+
+        <div class="card-body">
+            <img src="@imgSrc"
+                 width="220"
+                 class="rounded shadow mb-3"
+                 onerror="this.src='https://via.placeholder.com/250';" />
+
+            <h5>@Model.Name</h5>
+            <p>@Model.Description</p>
+
+            <p><b>Цена:</b> @Model.Price.ToString("0.00") €</p>
+            <p><b>Наличност:</b> @Model.Stock</p>
+            <p><b>Категория:</b> @Model.Category?.Name</p>
+            <p><b>Бранд:</b> @Model.Brand?.Name</p>
+
+            <a asp-area="Admin"
+               asp-controller="Products"
+               asp-action="Index"
+               class="btn btn-secondary">⬅ Назад</a>
+        </div>
+    </div>
+</div>

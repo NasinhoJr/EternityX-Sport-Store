@@ -1,0 +1,76 @@
+﻿@model IEnumerable<EternityX.Models.FavoriteProduct>
+
+@{
+    ViewData["Title"] = "Списък с любими продукти";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/favoriteproduct.css" asp-append-version="true" />
+}
+
+<div class="full-wrapper">
+    <h1>Списък с любими продукти</h1>
+
+    <div class="card-container">
+        @foreach (var item in Model)
+        {
+            <div class="product-card">
+                <div class="product-img-wrapper">
+                    @{
+                        string imgSrc = "https://via.placeholder.com/300";
+
+                        if (!string.IsNullOrWhiteSpace(item.Product.Picture))
+                        {
+                            if (item.Product.Picture.StartsWith("http"))
+                            {
+                                imgSrc = item.Product.Picture;
+                            }
+                            else if (item.Product.Picture.StartsWith("/images/"))
+                            {
+                                imgSrc = Url.Content(item.Product.Picture);
+                            }
+                            else
+                            {
+                                imgSrc = Url.Content($"~/images/products/{item.Product.Picture}");
+                            }
+                        }
+                    }
+
+                    <img class="product-img" src="@imgSrc" alt="@item.Product.Name" />
+                </div>
+
+                <div class="product-body">
+                    <h3>@item.Product.Name</h3>
+                    <p>@item.Product.Description</p>
+                    <div class="price">@item.Product.Price.ToString("0.00")€</div>
+
+                    <div class="stock-info">
+                        @if (item.Product.Stock > 10)
+                        {
+                            <span class="stock-ok">В наличност</span>
+                        }
+                        else if (item.Product.Stock > 0)
+                        {
+                            <span class="stock-low">Останали @item.Product.Stock броя</span>
+                        }
+                        else
+                        {
+                            <span class="stock-out">Изчерпано</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <a class="btn-details"
+                       asp-area="Customer"
+                       asp-controller="Products"
+                       asp-action="Details"
+                       asp-route-id="@item.ProductId">
+                        Подробности
+                    </a>
+                    <a class="btn-delete" asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

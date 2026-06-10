@@ -1,0 +1,57 @@
+﻿@model EternityX.Models.ProductSize
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+@{
+    ViewData["Title"] = "Редакция на размер";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 col-md-6 mx-auto">
+        <div class="card-header bg-warning">
+            <h4>✏️ Редактиране на размер на продукт</h4>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+
+                <!-- ЗАДЪЛЖИТЕЛНО -->
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ProductId" />
+
+                <!-- Продукт (readonly, без dropdown) -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Продукт</label>
+                    <input class="form-control"
+                           value="@Model.Product?.Name"
+                           readonly />
+                </div>
+
+                <!-- Размер -->
+                <div class="mb-3">
+                    <label asp-for="Size" class="form-label fw-semibold">Размер</label>
+                    <input asp-for="Size" class="form-control" />
+                </div>
+
+                <!-- Количество -->
+                <div class="mb-4">
+                    <label asp-for="Quantity" class="form-label fw-semibold">Количество</label>
+                    <input asp-for="Quantity"
+                           class="form-control"
+                           type="number"
+                           min="0" />
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">⬅ Назад</a>
+                    <button type="submit" class="btn btn-warning">💾 Запази</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

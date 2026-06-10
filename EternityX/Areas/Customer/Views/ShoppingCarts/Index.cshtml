@@ -1,0 +1,333 @@
+﻿@model IEnumerable<EternityX.Models.ShoppingCart>
+
+@section Styles { 
+    <link rel="stylesheet" href="~/css/cartshop.css" /> 
+}
+
+@{
+    ViewData["Title"] = "Количка"; 
+    var total = Model.Sum(x => x.Price); 
+}
+
+<div class="cart-wrapper">
+    <h1 class="cart-title">🛒 Моята количка</h1>
+    <a asp-area="Customer" asp-controller="Products" asp-action="Index" class="btn-back"> ⬅ Назад към продуктите </a>
+
+    @if (!Model.Any()) { 
+        <p class="text-center fs-4 text-muted">Количката е празна</p> 
+    } else { 
+        <div class="row g-5">
+            <!-- CART -->
+            <div class="col-lg-8">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Продукт</th>
+                            <th>Количество</th>
+                            <th>Цена</th>
+                            <th>Общо</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                            var pic = item.Product?.Picture?.Trim() ?? "";
+                            var isUrl = pic.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || pic.StartsWith("https://", StringComparison.OrdinalIgnoreCase);
+                            string src;
+                            if (string.IsNullOrWhiteSpace(pic)) {
+                                src = Url.Content("~/images/no-image.png"); 
+                            } else if (isUrl) {
+                                src = pic;
+                            } else { 
+                                if (pic.StartsWith("images/", StringComparison.OrdinalIgnoreCase) || pic.StartsWith("/images/", StringComparison.OrdinalIgnoreCase)) 
+                                    src = Url.Content("~/" + pic.TrimStart('/')); 
+                                else 
+                                    src = Url.Content($"~/images/products/{pic}"); 
+                            }
+
+                            var maxQty = item.Product?.Sizes?.FirstOrDefault(ps => ps.Size == item.Size)?.Quantity ?? 1;
+                        <tr>
+                            <td>
+                                <div class="product-cell">
+                                    <!-- Линк към детайлната страница на продукта -->
+                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Product.Id" class="product-link">
+                                        <img src="@src" class="product-img" alt="@item.Product?.Name" onerror="this.src='https://placehold.co/120x120';" />
+                                    </a>
+                                    <div>
+                                        <!-- Линк към детайлната страница на продукта (продуктово име) -->
+                                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Product.Id" class="product-link">
+                                            @item.Product.Name
+                                        </a>
+                                        <div class="product-meta">
+                                            @item.Product.Brand.Name • @item.Product.Category.Name • Размер: <strong>@item.Size</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                    <form asp-action="UpdateQuantity" method="post" class="qty-form">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="number" name="count" min="1" max="@maxQty" value="@item.Count" class="qty-input" />
+                                        <span class="error-msg" style="color: red; display: none;"></span> <!-- Грешка за количеството -->
+                                        <button class="btn-update" type="submit">Потвърди</button>
+                                    </form>
+                            </td>
+                            <td class="unit-price">@item.Product.Price.ToString("0.00")€</td>
+                            <td class="row-total"> 
+                                <strong>@item.Price.ToString("0.00")</strong>€ 
+                            </td>
+                            <td>
+                                <form asp-action="Remove" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button class="btn-remove">✕</button>
+                                </form>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="col-lg-4">
+                <div class="summary">
+                    <div class="summary-row summary-total">
+                        <span>Общо:</span> 
+                        <span id="cartTotal">@total.ToString("0.00")€</span>
+                    </div>
+                    <button type="button" class="btn-checkout" onclick="openCheckout()"> Плащане </button>
+                    <form asp-action="Clear" method="post">
+                        @Html.AntiForgeryToken() 
+                        <button class="btn-clear">Изчисти количката</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    } 
+</div>
+
+<!-- ================= CHECKOUT MODAL ================= -->
+<div id="checkoutModal" class="modal-overlay">
+    <div class="modal-box">
+        <h2 class="modal-title">💳 Завършване на поръчката</h2>
+        <form asp-action="Checkout" method="post" onsubmit="return showSuccess()">
+            @Html.AntiForgeryToken()
+            
+            <!-- DELIVERY TYPE -->
+            <h4>🚚 Доставка</h4>
+            <label class="radio">
+                <input type="radio" name="DeliveryType" value="Home" checked onclick="toggleAddress(true)" /> До личен адрес
+            </label>
+            <label class="radio">
+                <input type="radio" name="DeliveryType" value="Store" onclick="toggleAddress(false)" /> До офис на магазина
+            </label>
+
+            <!-- ALWAYS VISIBLE -->
+            <div class="form-group">
+                <label class="form-label">👤 Получател</label>
+                <input type="text" name="Name" placeholder="Име и фамилия" required />
+            </div>
+
+            <!-- ONLY FOR ADDRESS -->
+            <div id="addressFields">
+                <input name="StreetAddress" placeholder="Адрес" required />
+                <input name="City" placeholder="Град" required />
+                <input name="State" placeholder="Област" />
+                <input name="PostalCode" placeholder="Пощенски код" />
+            </div>
+
+            <!-- STORE -->
+            <div id="storeFields" style="display:none;">
+                <select id="officeSelect" onchange="setOfficeData()">
+                    <option value="">-- Избери офис --</option>
+                    <option data-city="София" data-address="Mall of Sofia"> София – Mall of Sofia </option>
+                    <option data-city="София" data-address="Paradise Center"> София – Paradise Center </option>
+                    <option data-city="Пловдив" data-address="Mall Plovdiv"> Пловдив – Mall Plovdiv </option>
+                    <option data-city="Варна" data-address="Grand Mall"> Варна – Grand Mall </option>
+                </select>
+                <input type="hidden" name="City" id="officeCity" />
+                <input type="hidden" name="StreetAddress" id="officeAddress" />
+                <input type="hidden" name="State" value="-" />
+                <input type="hidden" name="PostalCode" value="-" />
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="summary-box">
+                <p>🛒 Продукти: <strong id="modalProductsTotal"></strong></p>
+                <p>🚚 Доставка: <strong>5.00 €</strong></p>
+                <hr />
+                <p class="final">Общо за плащане: <span id="finalTotal"></span></p>
+                <p id="deliveryDate"></p>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn-confirm">Плащане</button>
+                <button type="button" class="btn-cancel" onclick="closeCheckout()">Отказ</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ================= STYLES ================= -->
+<style>
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; backdrop-filter: blur(4px); }
+    .modal-box { background: linear-gradient(180deg, #111, #0b0b0b); color: white; max-width: 540px; max-height: 92vh; overflow-y: auto; margin: 3% auto; padding: 32px; border-radius: 18px; box-shadow: 0 40px 90px rgba(0,0,0,0.9); border-top: 5px solid #f4c430; }
+    .modal-title { text-align: center; margin-bottom: 25px; font-size: 1.6rem; letter-spacing: .5px; }
+    h4 { margin: 20px 0 10px; font-weight: 600; color: #f4c430; }
+    .radio { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #1a1a1a; border-radius: 10px; margin-bottom: 10px; cursor: pointer; transition: .2s; }
+    .radio:hover { background: #222; }
+    input[type="text"], input[type="number"], select, #addressFields input { width: 100%; padding: 14px; margin-bottom: 12px; background: #151515; color: white; border: 1px solid #333; border-radius: 10px; font-size: .95rem; transition: .2s; }
+    input:focus, select:focus { outline: none; border-color: #f4c430; box-shadow: 0 0 0 2px rgba(244,196,48,.15); }
+    select option { background: #111; color: white; }
+    .summary-box { background: #0f0f0f; padding: 18px; border-radius: 14px; margin-top: 20px; border: 1px solid #222; }
+    .summary-box p { margin: 6px 0; font-size: .95rem; }
+    .summary-box strong, #finalTotal { color: #f4c430; }
+    .final { font-size: 1.4rem; margin-top: 10px; }
+    #deliveryDate { margin-top: 8px; font-size: .85rem; opacity: .85; }
+    .modal-actions { display: flex; gap: 15px; margin-top: 25px; }
+    .btn-confirm { flex: 1; background: linear-gradient(135deg, #f4c430, #ffdf6b); color: #000; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 1rem; border: none; cursor: pointer; transition: .2s; }
+    .btn-confirm:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(244,196,48,.35); }
+    .btn-cancel { flex: 1; background: #2a2a2a; color: #ddd; padding: 14px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: .2s; }
+    .btn-cancel:hover { background: #333; color: white; }
+    input:required { box-shadow: none !important; }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: #ccc; font-weight: 500; }
+    .form-group input, #addressFields input, .store-select, select { width: 100%; padding: 14px; background: #151515; color: #fff; border: 1px solid #333; border-radius: 10px; font-size: 0.95rem; transition: 0.2s; }
+    .form-group input::placeholder { color: #777; }
+    .form-group input:focus, #addressFields input:focus, select:focus { outline: none; border-color: #f4c430; box-shadow: 0 0 0 2px rgba(244,196,48,.15); }
+    /* Remove yellow outline for required fields */
+    input:required { box-shadow: none !important; }
+</style>
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+        const modal = document.getElementById("checkoutModal");
+
+    // Open the checkout modal
+    async function openCheckout() {
+      let total = 0;
+      const rows = document.querySelectorAll("tbody tr");
+
+      // Проверяваме за невалидни количества
+      let isValid = true;  // Флаг за валидност
+
+      for (const row of rows) {
+          const qty = parseInt(row.querySelector(".qty-input").value);
+          const minQty = parseInt(row.querySelector(".qty-input").getAttribute("min"));
+          const maxQty = parseInt(row.querySelector(".qty-input").getAttribute("max"));
+
+          // Проверка за валидност на количеството
+          if (qty < minQty || qty > maxQty || qty <= 0) {
+              isValid = false;  // Ако има невалидно количество, поставяме isValid на false
+              const errorMsg = row.querySelector(".error-msg");  // Показваме съобщение за грешка в съответния ред
+              errorMsg.textContent = `Моля, въведете валидно количество между ${minQty} и ${maxQty}.`;
+              errorMsg.style.display = 'block'; // Показваме съобщението за грешка
+          } else {
+              const errorMsg = row.querySelector(".error-msg");
+              errorMsg.textContent = ''; // Изчистваме съобщението за грешка
+              errorMsg.style.display = 'none'; // Скриваме съобщението
+          }
+
+          // Изчисляваме общата стойност за валидни количества
+          if (isValid) {
+              const price = parseFloat(row.querySelector(".unit-price").innerText.replace(",", "."));
+              const rowTotal = qty * price;
+              total += rowTotal;
+
+              const form = row.querySelector(".qty-form");
+              const data = new FormData(form);
+
+              // Изпращаме заявка за обновяване на количеството
+              await fetch(form.action, {
+                  method: "POST",
+                  body: data,
+                  headers: { 'RequestVerificationToken': form.querySelector('input[name="__RequestVerificationToken"]').value }
+              });
+
+              // Обновяваме цената на реда визуално
+              const rowTotalCell = row.querySelector(".row-total strong");
+              rowTotalCell.textContent = rowTotal.toFixed(2);
+          }
+      }
+
+      // Ако има невалидни стойности, спираме процеса на плащане
+      if (!isValid) {
+          alert("Моля, въведете валидни количества!");
+          return; // Спираме отварянето на чек-аут прозореца
+      }
+
+      // Обновяваме общата стойност и показваме модала
+      document.getElementById("cartTotal").innerText = total.toFixed(2) + "€";
+      document.getElementById("modalProductsTotal").innerText = total.toFixed(2) + " €";
+      document.getElementById("finalTotal").innerText = (total + 5).toFixed(2) + " €";
+      calculateDeliveryDate();
+
+      modal.style.display = "block";
+    }
+
+    // Close the checkout modal
+    function closeCheckout() {
+        modal.style.display = "none";
+    }
+
+    // Toggle between delivery address and store pickup
+    function toggleAddress(isHome) {
+        const addressFields = document.getElementById("addressFields");
+        const storeFields = document.getElementById("storeFields");
+        const addressInputs = addressFields.querySelectorAll("input");
+
+        if (isHome) {
+            addressFields.style.display = "block";
+            storeFields.style.display = "none";
+            addressInputs.forEach(i => i.required = true);
+        } else {
+            addressFields.style.display = "none";
+            storeFields.style.display = "block";
+            addressInputs.forEach(i => i.required = false);
+        }
+    }
+
+    // Set office data when store is selected
+    function setOfficeData() {
+        const select = document.getElementById("officeSelect");
+        const option = select.options[select.selectedIndex];
+
+        if (!option.dataset.city) return;
+
+        document.getElementById("officeCity").value = option.dataset.city;
+        document.getElementById("officeAddress").value = option.dataset.city + " – " + option.dataset.address;
+    }
+        function calculateDeliveryDate() {
+        const days = 3;
+        let d = new Date();
+        let addedDays = 0;
+
+        while (addedDays < days) {
+            d.setDate(d.getDate() + 1);
+            const day = d.getDay();
+
+            if (day !== 0 && day !== 6) {
+                addedDays++;
+            }
+        }
+
+        document.getElementById("deliveryDate").innerText =
+            `📦 Доставка след ${days} работни дни (${d.toLocaleDateString("bg-BG")})`;
+
+        window._deliveryText =
+            `След ${days} работни дни (${d.toLocaleDateString("bg-BG")})`;
+    }
+
+    // Show success message after checkout
+    function showSuccess() {
+        alert(
+            "✅ Успешно заплащане\n\n" +
+            "Дата: " + new Date().toLocaleDateString() + "\n" +
+            "Доставка: " + window._deliveryText + "\n" +
+            "Общо: " + document.getElementById("finalTotal").innerText
+        );
+        return true;
+    }
+</script>

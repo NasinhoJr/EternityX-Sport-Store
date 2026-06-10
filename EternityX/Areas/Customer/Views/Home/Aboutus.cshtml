@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "За нас";
+}
+
+<style>
+    body {
+        background: linear-gradient(180deg,#020617,#0f172a);
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .about-wrapper {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        padding: 60px 80px 100px;
+    }
+
+    .about-title {
+        font-size: 2.4rem;
+        font-weight: 900;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .about-card {
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 22px;
+        padding: 40px;
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 30px 60px rgba(0,0,0,.45);
+    }
+
+        .about-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .about-card p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #d1d5db;
+        }
+
+    media (max-width: 768px) {
+        .about-wrapper
+
+    {
+        padding: 40px 20px 80px;
+    }
+
+    .about-card {
+        padding: 30px;
+    }
+
+    }
+</style>
+
+<div class="about-wrapper">
+    <h1 class="about-title">За Eternity X</h1>
+
+    <div class="about-card">
+        <h2>Нашата мисия</h2>
+        <p>
+            Eternity X е създадена с идеята да предоставя висококачествени продукти и изключително обслужване на нашите клиенти.
+            Стремим се да съчетаем иновации, стил и надеждност във всяко нещо, което правим. Вашето доверие е нашият приоритет.
+        </p>
+
+        <h2>Нашите ценности</h2>
+        <p>
+            Честност, качество и удовлетворение на клиента са основните принципи, върху които изграждаме нашата работа.
+            Вярваме, че всеки клиент заслужава персонализирано внимание и уникално изживяване при пазаруване.
+        </p>
+    </div>
+</div>

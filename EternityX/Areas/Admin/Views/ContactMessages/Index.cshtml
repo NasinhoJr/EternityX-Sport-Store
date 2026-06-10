@@ -1,0 +1,27 @@
+﻿<h1>Съобщения от потребители</h1>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Потребител</th>
+            <th>Относно</th>
+            <th>Дата</th>
+            <th>Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.User.UserName</td>
+                <td>@m.Subject</td>
+                <td>@m.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@m.Id" class="btn btn-sm btn-primary">
+                        Преглед
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

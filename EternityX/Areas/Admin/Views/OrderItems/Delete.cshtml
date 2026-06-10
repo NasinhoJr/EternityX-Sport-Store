@@ -1,0 +1,39 @@
+﻿@model EternityX.Models.OrderItem
+
+@{
+    ViewData["Title"] = "Delete Order Item";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 col-md-6 mx-auto">
+        <div class="card-header bg-danger text-white">
+            <h4>🗑 Delete Order Item</h4>
+        </div>
+
+        <div class="card-body">
+            <p class="text-danger fw-semibold">
+                Are you sure you want to delete this order item?
+            </p>
+
+            <dl class="row">
+                <dt class="col-sm-4">Product</dt>
+                <dd class="col-sm-8">@Model.Product.Name</dd>
+
+                <dt class="col-sm-4">Quantity</dt>
+                <dd class="col-sm-8">@Model.Count</dd>
+
+                <dt class="col-sm-4">Price</dt>
+                <dd class="col-sm-8">@Model.Price.ToString("0.00") €</dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">⬅ Cancel</a>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

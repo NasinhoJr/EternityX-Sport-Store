@@ -1,0 +1,123 @@
+﻿/* ===== PRODUCTS INDEX (CUSTOMER) ===== */
+
+body {
+    background: radial-gradient(circle at top right, rgba(255,59,48,0.35), transparent 40%), radial-gradient(circle at bottom left, rgba(255,204,0,0.35), transparent 45%), linear-gradient(180deg, #020617, #0f172a);
+}
+
+.full-wrapper {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding: 60px 60px 80px;
+}
+
+.filters {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 22px;
+    box-shadow: 0 25px 60px rgba(0,0,0,.45);
+    color: #fff;
+}
+
+    .filters .form-control,
+    .filters .form-select {
+        background: rgba(255,255,255,0.95);
+        border-radius: 14px;
+        font-weight: 600;
+    }
+
+.page-title {
+    color: #fff;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
+}
+
+/* PRODUCT CARD */
+
+.product-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+
+.product-card {
+    height: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #ffffff, #f9fafb);
+    box-shadow: 0 30px 70px rgba(0,0,0,.35);
+    transition: transform .25s ease, box-shadow .25s ease;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+    .product-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 45px 90px rgba(0,0,0,.55);
+    }
+
+.product-img-wrapper {
+    background: radial-gradient(circle at top left, #ff3b30, transparent 45%), radial-gradient(circle at bottom right, #ffcc00, transparent 50%), #ffffff;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.product-img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,.35));
+}
+
+.product-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.product-title {
+    font-weight: 800;
+    font-size: 1.05rem;
+    min-height: 48px;
+}
+
+.product-meta {
+    font-size: .85rem;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #e11d48;
+}
+
+/* STOCK INFO */
+
+.stock-info {
+    font-size: .85rem;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.stock-ok {
+    color: #16a34a;
+}
+
+.stock-low {
+    color: #f59e0b;
+}
+
+.stock-out {
+    color: #dc2626;
+}
+

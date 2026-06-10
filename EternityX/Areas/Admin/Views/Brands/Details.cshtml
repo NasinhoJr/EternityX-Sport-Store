@@ -1,0 +1,31 @@
+﻿@model EternityX.Models.Brand
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+@{
+    ViewData["Title"] = "Детайли за бранд";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 col-md-6 mx-auto">
+        <div class="card-header bg-info text-white">
+            <h4>🔍 Детайли за бранд</h4>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Име</dt>
+                <dd class="col-sm-8">@Model.Name</dd>
+
+                <dt class="col-sm-4">Държава</dt>
+                <dd class="col-sm-8">@Model.Country</dd>
+            </dl>
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">⬅ Назад</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">✏️ Редактирай</a>
+            </div>
+        </div>
+    </div>
+</div>

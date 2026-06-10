@@ -1,0 +1,40 @@
+﻿body {
+    padding-top: 82px;
+    background: #f4f6f8;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    background: linear-gradient(90deg,#020617,#0f172a);
+    box-shadow: 0 8px 25px rgba(0,0,0,.35);
+}
+
+.navbar-brand {
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: #fff !important;
+}
+
+.nav-link {
+    color: #e5e7eb !important;
+    font-weight: 600;
+    padding: .55rem 1rem;
+    border-radius: 10px;
+}
+
+    .nav-link:hover {
+        background: rgba(255,255,255,.12);
+    }
+
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #ff3b30;
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 7px;
+    font-size: .7rem;
+    font-weight: 900;
+}

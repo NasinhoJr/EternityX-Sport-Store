@@ -1,0 +1,142 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<style>
+    body {
+        background: linear-gradient(120deg, #0f172a, #020617);
+        color: #fff;
+    }
+
+    .auth-wrapper {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 15px;
+    }
+
+    .auth-container {
+        background: rgba(255,255,255,0.06);
+        border-radius: 28px;
+        box-shadow: 0 40px 80px rgba(0,0,0,.55);
+        max-width: 1000px;
+        width: 100%;
+        padding: 50px;
+    }
+
+    .auth-title {
+        font-size: 2.6rem;
+        font-weight: 900;
+        margin-bottom: 10px;
+    }
+
+    .auth-subtitle {
+        color: #d1d5db;
+        margin-bottom: 30px;
+    }
+
+    .form-control {
+        height: 56px;
+        border-radius: 14px;
+        font-weight: 600;
+    }
+
+    .btn-auth {
+        background: linear-gradient(90deg,#ff3b30,#ff8c00);
+        border: none;
+        font-weight: 900;
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .auth-links a {
+        color: #ffcc00;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, rgba(255,59,48,.25), rgba(255,204,0,.25));
+        border-radius: 22px;
+        padding: 35px;
+        height: 100%;
+    }
+
+        .info-box h3 {
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .info-box p {
+            line-height: 1.6;
+            color: #f3f4f6;
+        }
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-container">
+        <div class="row g-5 align-items-center">
+
+            <!-- LOGIN FORM -->
+            <div class="col-lg-6">
+                <h1 class="auth-title">Добре дошли</h1>
+                <p class="auth-subtitle">
+                    Влезте в своя профил в <strong>EternityX</strong>
+                </p>
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <input asp-for="Input.Email"
+                               class="form-control"
+                               placeholder="Имейл" />
+                    </div>
+
+                    <div class="mb-3">
+                        <input asp-for="Input.Password"
+                               class="form-control"
+                               placeholder="Парола" />
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        <label class="form-check-label">Запомни ме</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-auth w-100">
+                        Вход
+                    </button>
+
+                    <div class="auth-links text-center mt-4">
+                        <p><a asp-page="./ForgotPassword">Забравена парола?</a></p>
+                        <p><a asp-page="./Register">Нямаш профил? Регистрирай се</a></p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- INFO (СЪЩОТО КАКТО ПРЕДИ) -->
+            <div class="col-lg-6">
+                <div class="info-box">
+                    <h3>Защо да влезеш?</h3>
+                    <p>
+                        След вход ще можеш да:<br /><br />
+                        🛒 <strong>Добавяш продукти</strong> в количката<br />
+                        📦 <strong>Следиш поръчките</strong> си<br />
+                        ❤️ <strong>Пазаруваш по-бързо</strong><br /><br />
+                        EternityX е за хора, които избират
+                        <strong>постоянство, сила и развитие</strong>.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

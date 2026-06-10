@@ -1,0 +1,37 @@
+﻿@model EternityX.Models.ProductSize
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+@{
+    ViewData["Title"] = "Изтриване на размер";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 col-md-6 mx-auto border-danger">
+        <div class="card-header bg-danger text-white">
+            <h4>🗑 Изтриване на размер на продукт</h4>
+        </div>
+
+        <div class="card-body">
+            <p class="text-danger fw-semibold">
+                Сигурни ли сте, че искате да изтриете този размер?
+            </p>
+
+            <ul>
+                <li><strong>Продукт:</strong> @Model.Product?.Name</li>
+                <li><strong>Размер:</strong> @Model.Size</li>
+                <li><strong>Количество:</strong> @Model.Quantity</li>
+            </ul>
+
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">⬅ Отказ</a>
+                    <button type="submit" class="btn btn-danger">🗑 Изтрий</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

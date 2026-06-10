@@ -1,0 +1,25 @@
+﻿/* ADMIN CARDS */
+.card {
+    border-radius: 22px;
+    box-shadow: 0 15px 35px rgba(0,0,0,.15);
+}
+
+.card-header {
+    font-weight: 900;
+}
+
+/* TABLES */
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(0,0,0,.04);
+}
+
+/* BUTTONS */
+.btn {
+    border-radius: 12px;
+    font-weight: 700;
+}

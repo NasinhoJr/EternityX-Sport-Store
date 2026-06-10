@@ -1,0 +1,34 @@
+﻿@model EternityX.Models.OrderItem
+
+@{
+    ViewData["Title"] = "Order Item Details";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 col-md-6 mx-auto">
+        <div class="card-header bg-info text-white">
+            <h4>🔍 Order Item Details</h4>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Order</dt>
+                <dd class="col-sm-8">#@Model.Order.Id</dd>
+
+                <dt class="col-sm-4">Product</dt>
+                <dd class="col-sm-8">@Model.Product.Name</dd>
+
+                <dt class="col-sm-4">Quantity</dt>
+                <dd class="col-sm-8">@Model.Count</dd>
+
+                <dt class="col-sm-4">Price</dt>
+                <dd class="col-sm-8">@Model.Price.ToString("0.00") €</dd>
+            </dl>
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">⬅ Back</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">✏️ Edit</a>
+            </div>
+        </div>
+    </div>
+</div>

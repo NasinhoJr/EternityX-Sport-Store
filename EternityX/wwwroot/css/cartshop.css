@@ -1,0 +1,192 @@
+﻿body {
+    background: linear-gradient(180deg, #020617, #0f172a);
+    color: #fff;
+}
+
+.cart-wrapper {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding: 60px 80px 100px;
+}
+
+.cart-title {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-bottom: 35px;
+    padding: 12px 22px;
+    border-radius: 14px;
+    border: 2px solid #fff;
+    color: #fff;
+    font-weight: 900;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+    .btn-back:hover {
+        background: rgba(255, 255, 255, .12);
+        color: #fff;
+    }
+
+.cart-table {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, .45);
+}
+
+    .cart-table th {
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.08);
+        font-weight: 700;
+        font-size: .85rem;
+        text-transform: uppercase;
+        color: #e5e7eb;
+    }
+
+    .cart-table td {
+        padding: 20px;
+        vertical-align: middle;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+.product-cell {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.product-img {
+    width: 90px;
+    height: 110px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 14px;
+    padding: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .product-img:hover {
+        transform: scale(1.05); /* Леко уголемяване на изображението при hover */
+    }
+
+.product-name {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: inherit; /* Наследява цвета на текста */
+    transition: color 0.2s ease;
+}
+
+    .product-name:hover {
+        color: #f4c430; /* Променя цвета на текста на жълто при hover */
+    }
+
+.product-meta {
+    font-size: .85rem;
+    color: #9ca3af;
+}
+
+/* Линкове към продуктите */
+.cart-table a.product-link {
+    text-decoration: none; /* Премахва подчертаването на линковете */
+    color: inherit; /* Наследява цвета на текста от родителския елемент */
+    cursor: pointer; /* Курсорът става ръка при задържане */
+}
+
+    .cart-table a.product-link:hover {
+        text-decoration: none; /* Премахваме подчертаването при hover */
+        color: inherit; /* Поддържаме цвета на текста без промяна */
+    }
+
+/* Стилизиране на линковете в таблицата */
+.cart-table td a {
+    cursor: pointer; /* Курсорът става ръка при задържане */
+}
+
+    /* Премахване на подчертаването на линковете при hover */
+    .cart-table td a:hover {
+        text-decoration: none;
+        color: inherit; /* Поддържаме цвета на текста без промяна */
+    }
+
+.qty-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.qty-input {
+    width: 80px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 900;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+}
+
+.btn-update {
+    background: #2563eb;
+    border: none;
+    color: #fff;
+    font-weight: 900;
+    padding: 10px 14px;
+    border-radius: 10px;
+}
+
+.btn-remove {
+    background: #dc2626;
+    border: none;
+    color: #fff;
+    font-weight: 900;
+    padding: 8px 14px;
+    border-radius: 10px;
+}
+
+.summary {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, .45);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    font-weight: 700;
+}
+
+.summary-total {
+    font-size: 1.4rem;
+    font-weight: 900;
+}
+
+.btn-checkout {
+    background: linear-gradient(90deg, #ff3b30, #ff8c00);
+    border: none;
+    border-radius: 14px;
+    font-weight: 900;
+    padding: 16px;
+    width: 100%;
+    margin-top: 20px;
+    color: #fff;
+}
+
+.btn-clear {
+    margin-top: 14px;
+    width: 100%;
+    background: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 800;
+}

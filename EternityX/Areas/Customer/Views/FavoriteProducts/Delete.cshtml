@@ -1,0 +1,39 @@
+﻿@model EternityX.Models.FavoriteProduct
+
+@{
+    ViewData["Title"] = "Изтриване";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/favoriteproduct.css" asp-append-version="true" />
+}
+<div class="full-wrapper delete-page">
+    <h1>Изтриване на любим продукт</h1>
+
+    <div class="delete-card">
+        <h3>Сигурни ли сте, че искате да изтриете този продукт от любими?</h3>
+
+        <div class="product-details-container">
+            <h4>Любим продукт</h4>
+            <hr />
+
+            <dl class="details-list">
+                <div class="details-row">
+                    <dt>Потребител</dt>
+                    <dd>@Html.DisplayFor(model => model.ApplicationUser.UserName)</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Продукт</dt>
+                    <dd>@Html.DisplayFor(model => model.Product.Name)</dd>
+                </div>
+            </dl>
+
+            <form asp-action="Delete" class="delete-actions">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn-delete">Изтрий</button>
+                <a asp-action="Index" class="btn-details">Назад към списъка</a>
+            </form>
+        </div>
+    </div>
+</div>

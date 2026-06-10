@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Контакти";
+}
+
+<h1>Контакти</h1>
+
+<form asp-action="Send" method="post" class="contact-form">
+    <div class="mb-3">
+        <label>Относно</label>
+        <input name="subject" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Съобщение</label>
+        <textarea name="message" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <button class="btn btn-dark fw-bold">Изпрати</button>
+</form>
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["success"]
+    </div>
+}

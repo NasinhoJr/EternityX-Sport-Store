@@ -1,0 +1,57 @@
+﻿@model EternityX.Models.ProductSize
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+@{
+    ViewData["Title"] = "Добавяне на размер";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 col-md-6 mx-auto">
+        <div class="card-header bg-success text-white">
+            <h4>➕ Добавяне на размер на продукт</h4>
+        </div>
+
+        <div class="card-body">
+            <form method="post">
+                @Html.AntiForgeryToken()
+
+                <!-- ПРОДУКТ -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Продукт</label>
+                    <select asp-for="ProductId"
+                            asp-items="ViewBag.ProductId"
+                            class="form-select">
+                        <option value="0">-- Избери продукт --</option>
+                    </select>
+                    <span asp-validation-for="ProductId" class="text-danger"></span>
+                </div>
+
+                <!-- РАЗМЕР -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Размер</label>
+                    <input asp-for="Size" class="form-control" />
+                    <span asp-validation-for="Size" class="text-danger"></span>
+                </div>
+
+                <!-- КОЛИЧЕСТВО -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Количество</label>
+                    <input asp-for="Quantity" class="form-control" min="0" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">⬅ Назад</a>
+                    <button type="submit" class="btn btn-success">💾 Запази</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

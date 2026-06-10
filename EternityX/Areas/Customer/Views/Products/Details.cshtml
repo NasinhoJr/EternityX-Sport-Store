@@ -1,0 +1,169 @@
+﻿@model EternityX.Models.Product
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery Antiforgery
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/product-detail.css" asp-append-version="false" />
+}
+
+@{
+    ViewData["Title"] = Model.Name;
+    var token = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+    string imgSrc = string.IsNullOrWhiteSpace(Model.Picture)
+        ? "https://placehold.co/600x600"
+        : (Model.Picture.StartsWith("http")
+            ? Model.Picture
+            : Url.Content($"~/images/products/{Model.Picture}"));
+}
+
+<!-- 🔙 BACK BUTTON -->
+<button class="back-top" onclick="goBackToProducts()">⬅ Назад към продукти</button>
+
+<div class="details-wrapper">
+    <div class="details-card">
+        <div class="details-image">
+            <img src="@imgSrc" alt="@Model.Name" onerror="this.src='https://placehold.co/600x600';" />
+        </div>
+
+        <div class="product-info">
+            <div class="product-name">@Model.Name</div>
+            <div class="product-meta">@Model.Brand.Name • @Model.Category.Name • Цвят: @Model.Color</div>
+            <div class="price">@Model.Price.ToString("0.00") €</div>
+
+            @if (Model.Sizes != null && Model.Sizes.Any())
+            {
+                <div class="size-section">
+                    <h6>Избери размер:</h6>
+                    <div class="size-grid">
+                        @foreach (var s in Model.Sizes)
+                        {
+                            <div class="size-box @(s.Quantity == 0 ? "disabled" : "")" data-size="@s.Size">
+                                @s.Size <br />
+                                <small>@(s.Quantity > 0 ? $"{s.Quantity} бр." : "Изчерпан")</small>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            <div id="sizeError" class="size-error-message"></div>
+            <div class="button-stack">
+                <button class="btn-buy" onclick="handleAdd()">🛒 Добави в количката</button>
+                <button class="btn-view" onclick="handleView()">👁️ Виж количката</button>
+                <button class="btn-favorite" onclick="addToFavorites()">❤️ Добави в любими</button>
+            </div>
+
+            <div class="description-box">
+                <strong>Описание на продукта:</strong>
+                <p>@Model.Description</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="cart-toast">✅ Продуктът е добавен в количката</div>
+<div id="favoriteToast" class="favorite-toast">✅ Продуктът е добавен в любими</div>
+
+<script>
+    const isAuthenticated = @(User.Identity.IsAuthenticated.ToString().ToLower());
+    let selectedSize = null;
+
+    document.querySelectorAll('.size-box:not(.disabled)').forEach(el => {
+        el.addEventListener('click', () => {
+            document.querySelectorAll('.size-box').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            selectedSize = el.dataset.size;
+        });
+    });
+
+    function goToRegister() {
+        window.location.href = '/Identity/Account/Register';
+    }
+
+    function handleAdd() {
+        if (!isAuthenticated) {
+            goToRegister();
+            return;
+        }
+        addToCart();
+    }
+
+    function handleView() {
+        if (!isAuthenticated) {
+            goToRegister();
+            return;
+        }
+        window.location.href = '/Customer/ShoppingCarts';
+    }
+
+    function goBackToProducts() {
+        window.location.href = '/Customer/Products';
+    }
+
+       function addToCart() {
+        const sizeError = document.getElementById('sizeError');
+
+        if (!selectedSize && @(Model.Sizes != null && Model.Sizes.Any() ? "true" : "false")) {
+            if (sizeError) sizeError.textContent = 'Моля, изберете размер';
+            return;
+        }
+
+        if (sizeError) sizeError.textContent = '';
+
+        fetch('/Customer/ShoppingCarts/Add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'RequestVerificationToken': '@token'
+            },
+            body: `productId=@Model.Id&size=${selectedSize}`
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                if (sizeError) sizeError.textContent = '';
+
+                const badge = document.getElementById('cartCount');
+                if (badge) badge.innerText = data.cartCount;
+
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            } else {
+                if (sizeError) sizeError.textContent = data.message || 'Грешка при добавяне.';
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            if (sizeError) sizeError.textContent = 'Възникна грешка.';
+        });
+    }
+
+    function addToFavorites() {
+        if (!isAuthenticated) {
+            goToRegister();
+            return;
+        }
+
+        fetch('/Customer/FavoriteProducts/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'RequestVerificationToken': '@token'
+            },
+            body: `productId=@Model.Id`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const favoriteToast = document.getElementById('favoriteToast');
+                favoriteToast.classList.add('show');
+                setTimeout(() => favoriteToast.classList.remove('show'), 2500);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    }
+</script>

@@ -1,0 +1,12 @@
+﻿<h1>Детайли за съобщение</h1>
+
+<div class="card mt-3">
+    <div class="card-header">
+        От: @Model.User.UserName | @Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Относно: @Model.Subject</h5>
+        <p class="card-text">@Model.Message</p>
+        <a asp-action="Index" class="btn btn-secondary">Назад към списъка</a>
+    </div>
+</div>

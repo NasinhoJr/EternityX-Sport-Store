@@ -1,0 +1,224 @@
+﻿@using EternityX.Roles
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject EternityX.Data.ApplicationDbContext Db
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EternityX</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/layout.css" />
+
+    @RenderSection("Styles", required: false)
+
+    
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+
+                <a class="navbar-brand"
+                   asp-area="Customer"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    ETERNITY<span style="color:#ff8c00;">X</span>
+                </a>
+
+                <div class="collapse navbar-collapse show">
+
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Index">Начало</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Customer"
+                               asp-controller="Products"
+                               asp-action="Index">Продукти</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="Privacy">Поверителност</a>
+                        </li>
+
+                        <!-- Нови линкове винаги видими -->
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Customer"
+                               asp-controller="ContactMessages"
+                               asp-action="Index">
+                                Контакти
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Customer"
+                               asp-controller="Home"
+                               asp-action="AboutUs">За нас</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated) 
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" 
+                                asp-area="Customer" 
+                                asp-controller="FavoriteProducts"
+                                asp-action="Index">Любими продукти</a>
+                            </li>
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav align-items-center">
+
+                        @* 🧑‍💼 ADMIN MENU *@
+                        @if (User.IsInRole(SD.Admin))
+                        {
+                            <li class="nav-item dropdown me-2">
+                                <a class="nav-link dropdown-toggle"
+                                   href="#"
+                                   role="button"
+                                   data-bs-toggle="dropdown">
+                                    👑 Администратор
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><hr class="dropdown-divider" /></li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="Products"
+                                           asp-action="Index">
+                                            📦 Продукти
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="Categories"
+                                           asp-action="Index">
+                                            🏷️ Категории
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="Brands"
+                                           asp-action="Index">
+                                            🏭 Брандове
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="ProductSizes"
+                                           asp-action="Index">
+                                            📏 Размери
+                                        </a>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider" /></li>
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="Orders"
+                                           asp-action="Index">
+                                            🧾 Поръчки
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="ApplicationUser"
+                                           asp-action="Index">
+                                            👥 Потребители
+                                        </a>
+                                    </li>
+
+                                    @* <li>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="ShoppingCarts"
+                                           asp-action="Index">
+                                            🛒 Колички
+                                        </a>
+                                    </li> *@
+
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-area="Admin"
+                                           asp-controller="ContactMessages"
+                                           asp-action="Index">
+                                            📩 Съобщения
+                                        </a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                        }
+
+                        @* 🛒 CART *@
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+                            var cartCount = Db.ShoppingCarts
+                            .Where(c => c.ApplicationUserId == userId)
+                            .Count();
+
+                            <li class="nav-item me-3">
+                                <a class="nav-link position-relative"
+                                   asp-area="Customer"
+                                   asp-controller="ShoppingCarts"
+                                   asp-action="Index">
+                                    🛒
+                                    <span id="cartCount" class="cart-badge">@cartCount</span>
+                                </a>
+                            </li>
+                        }
+
+
+                        <li class="nav-item">
+                            <partial name="_LoginPartial" />
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <footer class="text-center text-muted py-4 mt-5">
+        © 2025 EternityX
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+﻿@{
+    ViewData["Title"] = "Поверителност";
+}
+
+<style>
+    html, body {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* ===== HERO ===== */
+    .privacy-hero {
+        min-height: 65vh;
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: radial-gradient(circle at top right, #ff3b30, transparent 45%), radial-gradient(circle at bottom left, #ffcc00, transparent 45%), linear-gradient(120deg, #020617, #0f172a);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        padding: 80px 0;
+    }
+
+        .privacy-hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.15;
+        }
+
+        .privacy-hero span {
+            background: linear-gradient(90deg, #ff3b30, #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .privacy-hero p {
+            font-size: 1.15rem;
+            color: #e5e7eb;
+            max-width: 620px;
+            margin-top: 20px;
+        }
+
+    /* ===== CONTENT ===== */
+    .privacy-content {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: linear-gradient(180deg, #020617, #0b1220);
+        padding: 90px 0;
+        color: #e5e7eb;
+    }
+
+        .privacy-content h3 {
+            font-weight: 800;
+            margin-top: 35px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .privacy-content p {
+            font-size: 1rem;
+            line-height: 1.65;
+            color: #cbd5f5;
+            max-width: 900px;
+        }
+
+        .privacy-content ul {
+            padding-left: 18px;
+            margin-top: 10px;
+        }
+
+        .privacy-content li {
+            margin-bottom: 6px;
+            color: #cbd5f5;
+        }
+
+    /* ===== STRIP ===== */
+    .privacy-strip {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: linear-gradient(120deg, #ff3b30, #ff8c00);
+        padding: 70px 0;
+        color: #111;
+        text-align: center;
+    }
+
+        .privacy-strip h4 {
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .privacy-strip p {
+            font-weight: 700;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+    /* ===== FINAL ===== */
+    .privacy-final {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: #020617;
+        padding: 80px 0;
+        color: #e5e7eb;
+        text-align: center;
+    }
+
+        .privacy-final h2 {
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .privacy-final p {
+            font-weight: 700;
+            color: #cbd5f5;
+        }
+
+    media (max-width: 768px) {
+        .privacy-hero h1
+
+    {
+        font-size: 2.3rem;
+    }
+
+    }
+</style>
+
+<!-- ===== HERO ===== -->
+<section class="privacy-hero">
+    <div class="container">
+        <h1>
+            Поверителността<br />
+            е част от <span>EternityX</span>
+        </h1>
+
+        <p>
+            Доверието не е текст в дребен шрифт.
+            То е ясен ангажимент как пазим
+            и използваме вашите данни.
+        </p>
+    </div>
+</section>
+
+<!-- ===== CONTENT ===== -->
+<section class="privacy-content">
+    <div class="container">
+
+        <h3>1. Каква информация събираме</h3>
+        <p>
+            При използване на EternityX можем да събираме:
+        </p>
+        <ul>
+            <li>Име и фамилия</li>
+            <li>Имейл адрес</li>
+            <li>Телефонен номер</li>
+            <li>Адрес за доставка</li>
+            <li>История на поръчки</li>
+        </ul>
+
+        <h3>2. Как използваме вашите данни</h3>
+        <ul>
+            <li>Обработка и доставка на поръчки</li>
+            <li>Комуникация за статус</li>
+            <li>Подобряване на услугите</li>
+            <li>Спазване на законови изисквания</li>
+        </ul>
+
+        <h3>3. Сигурност</h3>
+        <p>
+            Данните се защитават чрез технически и организационни мерки.
+            Достъп имат само оторизирани лица.
+        </p>
+
+        <h3>4. Споделяне</h3>
+        <p>
+            Личните данни не се продават и не се предоставят на трети страни,
+            освен при необходимост за доставка или по закон.
+        </p>
+
+        <h3>5. Бисквитки</h3>
+        <p>
+            Използваме бисквитки за по-добра функционалност
+            и анализ на трафика.
+        </p>
+
+        <h3>6. Вашите права</h3>
+        <ul>
+            <li>Достъп до данните</li>
+            <li>Корекция или изтриване</li>
+            <li>Оттегляне на съгласие</li>
+        </ul>
+
+        <p class="mt-4 fw-semibold">
+            Последна актуализация: 2025 г.
+        </p>
+
+    </div>
+</section>
+
+<!-- ===== STRIP ===== -->
+<section class="privacy-strip">
+    <div class="container">
+        <h4>Прозрачност • Сигурност • Контрол</h4>
+        <p>
+            Без скрити условия.
+            Без компромиси с доверието.
+        </p>
+    </div>
+</section>
+
+<!-- ===== FINAL ===== -->
+<section class="privacy-final">
+    <div class="container">
+        <h2>EternityX</h2>
+        <p>
+            Доверието се изгражда.
+            Всеки ден.
+        </p>
+    </div>
+</section>

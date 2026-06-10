@@ -1,0 +1,69 @@
+﻿@model EternityX.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Детайли за потребител";
+    var roles = ViewData["Roles"] as IList<string>;
+}
+
+<h2 class="mb-4">Детайли за потребител</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <dl class="row">
+            <dt class="col-sm-3">Потребителско име</dt>
+            <dd class="col-sm-9">@Model.UserName</dd>
+
+            <dt class="col-sm-3">Име</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Имейл</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Телефон</dt>
+            <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+            <dt class="col-sm-3">Адрес</dt>
+            <dd class="col-sm-9">@Model.StreetAddress</dd>
+
+            <dt class="col-sm-3">Град</dt>
+            <dd class="col-sm-9">@Model.City</dd>
+
+            <dt class="col-sm-3">Област</dt>
+            <dd class="col-sm-9">@Model.State</dd>
+
+            <dt class="col-sm-3">Пощенски код</dt>
+            <dd class="col-sm-9">@Model.PostalCode</dd>
+
+            <dt class="col-sm-3">Роли</dt>
+            <dd class="col-sm-9">
+                @if (roles != null && roles.Any())
+                {
+                    foreach (var r in roles)
+                    {
+                        <span class="badge bg-primary me-1">@r</span>
+                    }
+                }
+                else
+                {
+                    <span class="text-muted">Няма роля</span>
+                }
+            </dd>
+        </dl>
+
+        <div class="mt-4">
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                ✏️ Редакция
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary ms-2">
+                ⬅️ Назад
+            </a>
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,311 @@
+﻿@{
+    ViewData["Title"] = "Начало";
+}
+
+<style>
+    html, body {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* ===== HERO ===== */
+    .hero-brand {
+        min-height: calc(100vh - 80px);
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: radial-gradient(circle at top right, #ff3b30, transparent 40%), radial-gradient(circle at bottom left, #ffcc00, transparent 40%), linear-gradient(120deg, #0f172a, #020617);
+        color: #fff;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-title {
+        font-size: 3.6rem;
+        font-weight: 900;
+        line-height: 1.1;
+    }
+
+        .hero-title span {
+            background: linear-gradient(90deg, #ff3b30, #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: #e5e7eb;
+        max-width: 620px;
+    }
+
+    .hero-cta {
+        background: linear-gradient(90deg, #ff3b30, #ff8c00);
+        border: none;
+        padding: 16px 38px;
+        font-size: 1.15rem;
+        font-weight: 800;
+        border-radius: 14px;
+        box-shadow: 0 20px 45px rgba(0,0,0,.45);
+    }
+
+    .hero-cta-outline {
+        border: 2px solid #fff;
+        padding: 14px 34px;
+        font-weight: 700;
+        border-radius: 14px;
+        color: #fff;
+    }
+
+    /* ===== STORY STRIP ===== */
+    .story-strip {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: linear-gradient(90deg, #ff3b30, #ffcc00);
+        color: #111;
+        padding: 90px 0;
+    }
+
+        .story-strip h2 {
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+    /* ===== POWER CATEGORIES ===== */
+    .power-section {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: #f8fafc;
+        padding: 100px 0;
+    }
+
+    .power-card {
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 30px 60px rgba(0,0,0,.18);
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+        .power-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 40px 80px rgba(0,0,0,.3);
+        }
+
+        .power-card img {
+            height: 320px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+    .power-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.1));
+        display: flex;
+        align-items: flex-end;
+        padding: 28px;
+        color: #fff;
+        font-size: 1.7rem;
+        font-weight: 900;
+    }
+
+    /* ===== TRUST ===== */
+    .trust {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: linear-gradient(180deg, #020617, #0f172a);
+        color: #e5e7eb;
+        padding: 100px 0;
+    }
+
+    .trust-box {
+        text-align: center;
+        padding: 30px;
+    }
+
+        .trust-box h4 {
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+    /* ===== BRAND COLORS STRIP ===== */
+    .brand-colors {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        background: linear-gradient(120deg, #ff3b30, #ff8c00, #ffcc00);
+        padding: 110px 0;
+        color: #111;
+        text-align: center;
+    }
+
+        .brand-colors h2 {
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .brand-colors p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+    media (max-width: 768px) {
+        .hero-title
+
+    {
+        font-size: 2.6rem;
+    }
+
+    }
+</style>
+
+<!-- ===== HERO ===== -->
+<section class="hero-brand">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <h1 class="hero-title">
+                    Това не е просто магазин.<br />
+                    Това е <span>спортна идентичност</span>.
+                </h1>
+
+                <p class="hero-subtitle mt-4 mb-5">
+                    EternityX е място за хора, които тренират,
+                    надграждат се и гонят повече от „достатъчно“.
+                    Тук започват навиците, които изграждат шампиони.
+                </p>
+
+                <div class="d-flex gap-3 flex-wrap">
+                    <a asp-area="Customer"
+                       asp-controller="Products"
+                       asp-action="Index"
+                       class="btn hero-cta text-white">
+                        Виж продуктите
+                    </a>
+
+                    <a href="#power"
+                       class="btn hero-cta-outline">
+                        Избери своя спорт
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-5 text-center">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+                     class="img-fluid rounded-4 shadow-lg"
+                     alt="Sport power">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== STORY ===== -->
+<section class="story-strip">
+    <div class="container text-center">
+        <h2>Защо EternityX?</h2>
+        <p class="fs-5 fw-semibold">
+            Защото спортът е избор, не случайност.
+            Ние подбираме оборудване за хора,
+            които искат контрол, сила и постоянство.
+        </p>
+    </div>
+</section>
+
+<!-- ===== POWER ===== -->
+<section id="power" class="power-section">
+    <div class="container">
+
+        <h2 class="fw-bold text-center mb-5">
+            Намери своята посока
+        </h2>
+
+        <div class="row g-4">
+
+            <!-- ⚽ ФУТБОЛ -->
+            <div class="col-md-4">
+                <a asp-area="Customer"
+                   asp-controller="Products"
+                   asp-action="Index"
+                   asp-route-categoryId="2"
+                   class="text-decoration-none">
+                    <div class="power-card position-relative">
+                        <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d"
+                             alt="Футбол">
+                        <div class="power-overlay">Футбол</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 🏋️ ФИТНЕС -->
+            <div class="col-md-4">
+                <a asp-area="Customer"
+                   asp-controller="Products"
+                   asp-action="Index"
+                   asp-route-categoryId="4"
+                   class="text-decoration-none">
+                    <div class="power-card position-relative">
+                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438"
+                             alt="Фитнес">
+                        <div class="power-overlay">Фитнес</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 🏃 БЯГАНЕ -->
+            <div class="col-md-4">
+                <a asp-area="Customer"
+                   asp-controller="Products"
+                   asp-action="Index"
+                   asp-route-categoryId="1"
+                   class="text-decoration-none">
+                    <div class="power-card position-relative">
+                        <img src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf"
+                             alt="Бягане">
+                        <div class="power-overlay">Бягане</div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== TRUST ===== -->
+<section class="trust">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4 trust-box">
+                <h4>Оригинални марки</h4>
+                <p>Само автентични продукти с доказано качество.</p>
+            </div>
+
+            <div class="col-md-4 trust-box">
+                <h4>Фокус върху резултата</h4>
+                <p>Всичко е подбрано с мисъл за реална употреба.</p>
+            </div>
+
+            <div class="col-md-4 trust-box">
+                <h4>Ясна навигация</h4>
+                <p>Без шум. Без объркване. Само действие.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== BRAND COLORS FINAL ===== -->
+<section class="brand-colors">
+    <div class="container">
+        <h2>EternityX</h2>
+        <p>
+            Не следвай тенденции.
+            Създай навици.
+            Изгради постоянство.
+            Движи се напред.
+        </p>
+    </div>
+</section>

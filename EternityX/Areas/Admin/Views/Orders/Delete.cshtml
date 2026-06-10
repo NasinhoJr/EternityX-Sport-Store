@@ -1,0 +1,36 @@
+﻿@model EternityX.Models.Order
+
+@{
+    ViewData["Title"] = "Изтриване на поръчка";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-danger text-white">
+            <h4>🗑 Изтриване на поръчка</h4>
+        </div>
+
+        <div class="card-body">
+            <p class="text-danger fw-semibold">
+                Сигурни ли сте, че искате да изтриете тази поръчка?
+            </p>
+
+            <dl class="row">
+                <dt class="col-sm-4">Потребител</dt>
+                <dd class="col-sm-8">@Model.ApplicationUser.UserName</dd>
+
+                <dt class="col-sm-4">Обща сума</dt>
+                <dd class="col-sm-8">@Model.OrderTotal.ToString("0.00") €</dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">⬅ Отмени</a>
+                    <button type="submit" class="btn btn-danger">Изтрий</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

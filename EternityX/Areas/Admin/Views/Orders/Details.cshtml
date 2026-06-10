@@ -1,0 +1,94 @@
+﻿@model EternityX.Models.Order
+
+@{
+    ViewData["Title"] = "Детайли на поръчката";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-info text-white">
+            <h4>🔍 Детайли на поръчката</h4>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Потребител</dt>
+                <dd class="col-sm-8">@Model.ApplicationUser.UserName</dd>
+
+                <dt class="col-sm-4">Дата на поръчката</dt>
+                <dd class="col-sm-8">@Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                <dt class="col-sm-4">Обща сума</dt>
+                <dd class="col-sm-8">@Model.OrderTotal.ToString("0.00") €</dd>
+
+                <dt class="col-sm-4">Име</dt>
+                <dd class="col-sm-8">@Model.Name</dd>
+
+                <dt class="col-sm-4">Адрес</dt>
+                <dd class="col-sm-8">@Model.StreetAddress</dd>
+
+                <dt class="col-sm-4">Град</dt>
+                <dd class="col-sm-8">@Model.City</dd>
+
+                <dt class="col-sm-4">Област</dt>
+                <dd class="col-sm-8">@Model.State</dd>
+
+                <dt class="col-sm-4">Пощенски код</dt>
+                <dd class="col-sm-8">@Model.PostalCode</dd>
+
+                <!-- Добавяне на дата на доставка -->
+                <dt class="col-sm-4">Дата на доставка</dt>
+                <dd class="col-sm-8" id="deliveryDate">Изчислява се...</dd> <!-- Тук ще се попълни датата на доставка -->
+            </dl>
+
+            <div class="d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-secondary">⬅ Назад</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Изтрий</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт за изчисляване на дата на доставка -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Функция за изчисляване на датата на доставка
+        function calculateDeliveryDate(orderDate) {
+            const days = 3;  // Точно 3 работни дни
+            let d = new Date(orderDate);  // Използваме датата на поръчката
+            let addedDays = 0;
+
+            // Проверка дали датата е валидна
+            if (isNaN(d)) {
+                console.error("Невалидна дата на поръчката");
+                return;
+            }
+
+            // Добавяме точно 3 работни дни
+            while (addedDays < days) {
+                d.setDate(d.getDate() + 1); // Добавяме един ден
+                const day = d.getDay(); // Проверяваме кой ден е
+
+                // Пропускаме събота (6) и неделя (0)
+                if (day !== 0 && day !== 6) {
+                    addedDays++; // Увеличаваме броя на добавените работни дни
+                }
+            }
+
+            // Обновяваме полето за дата на доставка в HTML
+            document.getElementById("deliveryDate").innerText =
+                `📦 Доставка след ${days} работни дни (${d.toLocaleDateString("bg-BG")})`;
+
+            // Задаваме стойност в глобалната променлива
+            window._deliveryText =
+                `След ${days} работни дни (${d.toLocaleDateString("bg-BG")})`;
+        }
+
+        // Предаване на датата на поръчката от C# към JavaScript
+        // Форматираме датата в ISO формат (YYYY-MM-DD), за да е правилно разпозната от JavaScript
+        const orderDate = "@Model.OrderDate.ToString("yyyy-MM-dd")"; // Форматираме като ISO низ
+
+        // Извикваме функцията за изчисляване на датата на доставка след зареждане на страницата
+        calculateDeliveryDate(orderDate);
+    });
+</script>

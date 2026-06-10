@@ -1,0 +1,133 @@
+﻿@model IEnumerable<EternityX.Models.Product>
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/products.css" />
+}
+
+@{
+    ViewData["Title"] = "Продукти";
+}
+
+<div class="full-wrapper">
+    <h1 class="page-title">Продукти</h1>
+    <!-- FILTERS -->
+    <form method="get" class="filters">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label>Търсене</label>
+                <input class="form-control" name="search" value="@Context.Request.Query["search"]" placeholder="Търси продукт…" />
+            </div>
+            <div class="col-md-2">
+                <label>Категория</label>
+                <select name="categoryId" class="form-select">
+                    <option value="">Всички</option>
+                    @foreach (var c in ViewBag.Categories)
+                    {
+                        <option value="@c.Id" selected="@(Context.Request.Query["categoryId"] == c.Id.ToString())">
+                            @c.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Марка</label>
+                <select name="brandId" class="form-select">
+                    <option value="">Всички</option>
+                    @foreach (var b in ViewBag.Brands)
+                    {
+                        <option value="@b.Id" selected="@(Context.Request.Query["brandId"] == b.Id.ToString())">
+                            @b.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Цена от</label>
+                <input type="number" name="minPrice" step="1" min="0" class="form-control" value="@Context.Request.Query["minPrice"]" id="minPrice" oninput="validateMinPrice()" />
+            </div>
+            <div class="col-md-2">
+                <label>Цена до</label>
+                <input type="number" name="maxPrice" step="1" min="0" class="form-control" value="@Context.Request.Query["maxPrice"]" id="maxPrice" oninput="validateMinPrice()" />
+            </div>
+            <script>
+                function validateMinPrice() {
+                    var minPrice = parseFloat(document.getElementById('minPrice').value);
+                    var maxPrice = parseFloat(document.getElementById('maxPrice').value);
+                    // Проверка дали "Цена от" е по-голяма от "Цена до"
+                    if (minPrice >= maxPrice && !isNaN(minPrice) && !isNaN(maxPrice)) {
+                        document.getElementById('minPrice').setCustomValidity("Цена от не може да бъде по-голяма или равна от Цена до.");
+                    } else {
+                        document.getElementById('minPrice').setCustomValidity(""); // Отстранява грешката
+                    }
+                }
+            </script>
+            <div class="col-md-2">
+                <label>Наличност</label>
+                <select name="stock" class="form-select">
+                    <option value="">Всички</option>
+                    <option value="in" selected="@(Context.Request.Query["stock"] == "in")">В наличност</option>
+                    <option value="low" selected="@(Context.Request.Query["stock"] == "low")">Ограничени</option>
+                    <option value="out" selected="@(Context.Request.Query["stock"] == "out")">Изчерпани</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label>Сортиране</label>
+                <select name="sort" class="form-select">
+                    <option value="">По подразбиране</option>
+                    <option value="price_asc" selected="@(Context.Request.Query["sort"] == "price_asc")">Цена ↑</option>
+                    <option value="price_desc" selected="@(Context.Request.Query["sort"] == "price_desc")">Цена ↓</option>
+                    <option value="name" selected="@(Context.Request.Query["sort"] == "name")">Име (A–Z)</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark w-100 fw-bold">Приложи</button>
+            </div>
+            <div class="col-md-2">
+                <a asp-action="Index" asp-controller="Products" asp-area="Customer" class="btn btn-outline-secondary w-100 fw-bold">Изчисти</a>
+            </div>
+        </div>
+    </form>
+
+    <!-- PRODUCTS -->
+    <div class="mt-5">
+        <div class="row g-4">
+            @foreach (var p in Model)
+            {
+                <div class="col-md-4 col-lg-3">
+                    <a asp-action="Details" asp-route-id="@p.Id" class="product-link">
+                        <div class="product-card">
+                            @{
+                                string imgSrc = string.IsNullOrWhiteSpace(p.Picture) ? "https://placehold.co/400x400" : (p.Picture.StartsWith("http") ? p.Picture : Url.Content($"~/images/products/{p.Picture}"));
+                            }
+                            <div class="product-img-wrapper">
+                                <img src="@imgSrc" alt="@p.Name" class="product-img" onerror="this.src='https://placehold.co/400x400';" />
+                            </div>
+                            <div class="product-body">
+                                <div class="product-title">@p.Name</div>
+                                <div class="product-meta">@p.Brand.Name • @p.Category.Name</div>
+                                <span class="price">@p.Price.ToString("0.00") €</span>
+                                @if (p.Stock > 5)
+                                {
+                                    <div class="stock-info stock-ok">В наличност • @p.Stock бр.</div>
+                                }
+                                else if (p.Stock > 0)
+                                {
+                                    <div class="stock-info stock-low">Ограничено количество • остават @p.Stock бр.</div>
+                                }
+                                else
+                                {
+                                    <div class="stock-info stock-out">Изчерпан продукт</div>
+                                }
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+
+        @if (!Model.Any())
+        {
+            <p class="text-center text-white fs-5 mt-5">Няма намерени продукти.</p>
+        }
+    </div>
+</div>
